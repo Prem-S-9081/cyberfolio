@@ -273,7 +273,7 @@ const researchPapers = [
         date: 'Under Review',
         publication: 'TechScience Journal',
         status: 'Under Review',
-        link: 'index.html'
+        link: '404.html'
     },
     {
         id: 5,
