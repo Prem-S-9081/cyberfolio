@@ -273,7 +273,7 @@ const researchPapers = [
         date: 'Under Review',
         publication: 'TechScience Journal',
         status: 'Under Review',
-        link: '404.html'
+        link: '/404.html'
     },
     {
         id: 5,
@@ -300,7 +300,7 @@ const researchPapers = [
         date: 'July 2026',
         publication: 'THE TAMIL NADU DR.AMBEDKAR LAW UNIVERSITY',
         status: 'published',
-        link: 'Link_in_Future'
+        link: '/404.html'
     }
 ];
 
