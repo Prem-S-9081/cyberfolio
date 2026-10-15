@@ -1,0 +1,3 @@
+/* Loaded only when JavaScript is off: hide the preloader and unlock scrolling */
+#preloader { display: none; }
+body.is-loading { overflow: auto; }
