@@ -839,7 +839,7 @@ document.addEventListener('keydown', (e) => {
    To change them, edit the arrays below.
 ========================================================= */
 (function () {
-    const PIECES = { email: ['premksnm', 'gmail.com'], phone: ['+1', '201', '238', '8400'] };
+    const PIECES = { email: ['info', 'securedbyprem.com'], phone: ['+1', '201', '238', '8400'] };
     const value = { email: () => PIECES.email.join('@'), phone: () => PIECES.phone.join('') };
     const href = {
         email: () => 'mailto:' + value.email() + '?subject=' + encodeURIComponent('Hello from your portfolio'),
