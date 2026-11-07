@@ -580,7 +580,7 @@ const contactForm = document.getElementById('contactForm');
 const formStatus = document.getElementById('formStatus');
 
 // Replace with your Google Apps Script web app URL
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzoXOwB6pXwnt9BwYWtaNiBEEJrznwk6W9XBbemMZ6eneQVDuIbms7Ks9PWEDkfOfjVPw/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxW1JbKPlS79ahyUSMkosI3sxqgmUU5yIEZZzQyflMIQxEMlq4YRBldS-ZHioK38cC9SA/exec';
 
 contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
