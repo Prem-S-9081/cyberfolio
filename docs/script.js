@@ -313,10 +313,10 @@ const researchPapers = [
 const blogPosts = [
     {
         id: 1,
-        title: 'WordPress 7.1.1 Security Update: Click2Shell and 10 Other Fixes',
-        date: '09-29-2026',
-        description: 'Publisher : CodeX',
-        link: 'https://medium.com/codex/wordpress-7-1-1-security-update-click2shell-and-10-other-fixes-9d75aa0a346d'
+        title: 'PHP2Shell: Two Critical RCEs in the PHP Runtime. Secure Code Won’t Save You',
+        date: '10-23-2026',
+        description: 'Publisher : Meet Cyber',
+        link: 'https://medium.com/meetcyber/php2shell-two-critical-rces-in-the-php-runtime-secure-code-wont-save-you-b8f94469ac5f?sharedUserId=premshivani1215'
     },
     {
         id: 2,
@@ -327,58 +327,65 @@ const blogPosts = [
     },
     {
         id: 3,
+        title: 'Google Gemini Security Incident: AI Test Reached Three Real Companies',
+        date: '09-21-2026',
+        description: 'Publisher : Generative AI',
+        link: 'https://medium.com/generative-ai/google-gemini-security-incident-ai-test-reached-three-real-companies-17050d315f2c'
+    },
+    {
+        id: 4,
         title: 'WSO2 Vulnerability CVE-2026-5430 Explained: How Attackers Are Bypassing Authentication in the Wild',
         date: '09-21-2026',
         description: 'Publisher : Write A Catalyst',
         link: 'https://medium.com/write-a-catalyst/wso2-vulnerability-cve-2026-5430-explained-how-attackers-are-bypassing-authentication-in-the-wild-d291883b9309'
     },
     {
-        id: 4,
+        id: 5,
         title: 'Kerberos vs NTLM vs LDAP: Best Auth for E-Commerce',
         date: '02-13-2026',
-        description: 'Publisher : MeetCyber',
+        description: 'Publisher : Meet Cyber',
         link: 'https://medium.com/meetcyber/kerberos-vs-ntlm-vs-ldap-best-auth-for-e-commerce-441c43155c75'
     },
     {
-        id: 5,
+        id: 6,
         title: 'Security Harderning: Stateful iptables Firewall for DMZ Isolation & Cyber Threat Mitigation',
         date: '02-13-2026',
-        description: 'Publisher : MeetCyber',
+        description: 'Publisher : Meet Cyber',
         link: 'https://medium.com/meetcyber/strengthening-network-defense-for-a-startup-proposal-502dfd359d16'
     },
     {
-        id: 6,
+        id: 7,
         title: 'SIEM Implementation Guide : Kibana',
         date: '02-26-2026',
-        description: 'Publisher : MeetCyber',
+        description: 'Publisher : Meet Cyber',
         link: 'https://medium.com/meetcyber/complete-siem-implementation-guide-log-collection-correlation-rules-alerting-and-dashboards-799cf9c388d8'
     },
     {
-        id: 7,
+        id: 8,
         title: 'NIST CSF 2.0 : GOVERN FUNCTION',
         date: '03-10-2026',
-        description: 'Publisher : MeetCyber',
+        description: 'Publisher : Meet Cyber',
         link: 'https://medium.com/meetcyber/nist-csf-2-0-part-1-how-the-new-govern-function-reshapes-enterprise-cybersecurity-leadership-aff485f6f1c2'
     },
     {
-        id: 8,
+        id: 9,
         title: 'NIST CSF 2.0 : IMPLEMENTATION GUIDE',
         date: '04-22-2026',
-        description: 'Publisher : MeetCyber',
+        description: 'Publisher : Meet Cyber',
         link: 'https://medium.com/meetcyber/nist-csf-2-0-implementation-guide-profiles-tiers-board-reporting-and-supply-chain-risk-6e07a2d0a86d'
     },
     {
-        id: 9,
+        id: 10,
         title: 'NIST CSF 2.0 : IDENTITY, PROTECT & DETECT',
         date: '08-24-2026',
-        description: 'Publisher : MeetCyber',
+        description: 'Publisher : Meet Cyber',
         link: 'https://medium.com/meetcyber/nist-csf-2-0-guide-identify-protect-and-detect-cybersecurity-risks-0b04295ccaa0'
     },
     {
-        id: 10,
+        id: 11,
         title: 'NIST CSF 2.0 : INCIDENT RESPONSE & RECOVERY',
         date: '08-27-2026',
-        description: 'Publisher : MeetCyber',
+        description: 'Publisher : Meet Cyber',
         link: 'https://medium.com/meetcyber/nist-csf-2-0-incident-response-recovery-guide-to-cyber-resilience-508a01b5c26c'
     }
 ];
