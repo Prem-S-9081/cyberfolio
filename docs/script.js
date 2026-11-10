@@ -589,58 +589,83 @@ const formStatus = document.getElementById('formStatus');
 // Replace with your Google Apps Script web app URL
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxJn1j7R2jM9SbtaGbow09A5iuvcAI50Cvkg6mZDnM8LlyLu8PHDtjUWpZhradUDEuSqg/exec';
 
+const formLoadedAt = Date.now();
+const submitBtn = contactForm.querySelector('.submit-btn');
+const messageBox = document.getElementById('f-message');
+const messageCount = document.getElementById('msgCount');
+let sending = false;
+let statusTimer;
+
+function showStatus(state, text, hideAfter) {
+    formStatus.textContent = text;
+    formStatus.dataset.state = state;
+    formStatus.classList.add('show');
+    clearTimeout(statusTimer);
+    if (hideAfter) statusTimer = setTimeout(() => formStatus.classList.remove('show'), hideAfter);
+}
+
+// Live character counter for the message box
+function updateCount() {
+    const max = messageBox.maxLength;
+    messageCount.textContent = messageBox.value.length + ' / ' + max;
+    messageCount.classList.toggle('is-near', messageBox.value.length >= max * 0.9);
+}
+messageBox.addEventListener('input', updateCount);
+updateCount();
+
+const FORM_ERRORS = {
+    invalid: 'Please check your details and try again.',
+    rate_limited: 'Too many messages in a short time. Please try again later.',
+    bad_request: 'Something was wrong with the message. Please try again.',
+    server_error: 'The server had a problem saving your message. Please try again.'
+};
+const NOT_CONFIRMED = 'I couldn\'t confirm that your message was delivered. Please try again, or use the email button.';
+
 contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (sending) return;                       // ignore double clicks
+    sending = true;
+    submitBtn.disabled = true;
+    contactForm.setAttribute('aria-busy', 'true');
+    showStatus('sending', 'Sending message...');
 
-    // Get form data
-    const formData = new FormData(contactForm);
-    const name = formData.get('name');
-    const email = formData.get('email');
-    const message = formData.get('message');
-
-    // Show loading status
-    formStatus.textContent = 'Sending message...';
-    formStatus.dataset.state = 'sending';
-    formStatus.classList.add('show');
-
+    const fields = new FormData(contactForm);
     try {
-        // Send data to Google Sheets
         const response = await fetch(SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors', // Important for Google Apps Script
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            // text/plain keeps this a "simple" request (no CORS preflight), which Apps Script needs.
+            // The script replies with JSON the page can read, so success below means the message was saved.
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify({
-                name: name,
-                email: email,
-                message: message
+                name: fields.get('name'),
+                email: fields.get('email'),
+                message: fields.get('message'),
+                website: fields.get('website'),          // hidden spam trap, should stay empty
+                elapsed: Date.now() - formLoadedAt       // ms since page load
             })
         });
+        let result = null;
+        try { result = await response.json(); } catch (parseError) { result = null; }
 
-        // Show success message
-        formStatus.textContent = 'Message sent successfully! I\'ll get back to you soon.';
-        formStatus.dataset.state = 'success';
-        formStatus.classList.add('show');
-
-        // Celebrate (Swiss palette, skipped for reduced motion)
-        fireConfetti(contactForm.querySelector('.submit-btn'));
-
-        // Reset form
-        contactForm.reset();
-
+        if (result && result.ok === true) {
+            showStatus('success', 'Message sent successfully! I\'ll get back to you soon.', 8000);
+            fireConfetti(submitBtn);
+            contactForm.reset();
+            updateCount();
+        } else if (result && result.ok === false) {
+            showStatus('error', FORM_ERRORS[result.error] || FORM_ERRORS.server_error, 9000);
+        } else {
+            showStatus('error', NOT_CONFIRMED, 9000);
+        }
     } catch (error) {
-        // Show error message
-        formStatus.textContent = 'Error sending message. Please try again.';
-        formStatus.dataset.state = 'error';
-        formStatus.classList.add('show');
-        console.error('Error:', error);
+        // offline, blocked, or the reply could not be read: never claim success
+        showStatus('error', NOT_CONFIRMED, 9000);
+        console.error('Contact form error:', error);
+    } finally {
+        sending = false;
+        submitBtn.disabled = false;
+        contactForm.removeAttribute('aria-busy');
     }
-
-    // Hide status after 5 seconds
-    setTimeout(() => {
-        formStatus.classList.remove('show');
-    }, 5000);
 });
 
 // Escape closes the mobile menu
@@ -651,6 +676,7 @@ document.addEventListener('keydown', (e) => {
         mobileMenuBtn.focus();
     }
 });
+
 
 /* =========================================================
    MAGIC UI PORTS (vanilla): Dia Text Reveal, Interactive Hover Button,
@@ -846,11 +872,10 @@ document.addEventListener('keydown', (e) => {
    To change them, edit the arrays below.
 ========================================================= */
 (function () {
-    const PIECES = { email: ['info', 'securedbyprem.com'], phone: ['+1', '201', '238', '8400'] };
-    const value = { email: () => PIECES.email.join('@'), phone: () => PIECES.phone.join('') };
+    const PIECES = { email: ['info', 'securedbyprem.com'] };
+    const value = { email: () => PIECES.email.join('@') };
     const href = {
-        email: () => 'mailto:' + value.email() + '?subject=' + encodeURIComponent('Hello from your portfolio'),
-        phone: () => 'tel:' + value.phone()
+        email: () => 'mailto:' + value.email() + '?subject=' + encodeURIComponent('Hello from your portfolio')
     };
     const status = document.getElementById('contactStatus');
     let statusTimer;
@@ -883,15 +908,13 @@ document.addEventListener('keydown', (e) => {
         const link = e.target.closest('[data-contact]');
         if (link) {
             arm(link);
-            say(link.dataset.contact === 'email'
-                ? 'Opening your email app. Nothing opened? Use the copy button.'
-                : 'Starting a call. On a computer, use the copy button instead.');
+            say('Opening your email app. Nothing opened? Use the copy button.');
             return;
         }
         const btn = e.target.closest('[data-copy]');
         if (btn) {
             const ok = await copy(value[btn.dataset.copy]());
-            say(ok ? (btn.dataset.copy === 'email' ? 'Email address copied.' : 'Phone number copied.') : 'Copy failed. Use the Email or Call button.');
+            say(ok ? 'Email address copied.' : 'Copy failed. Use the Email button.');
             if (ok) {
                 btn.classList.add('is-copied');
                 setTimeout(() => btn.classList.remove('is-copied'), 1800);
